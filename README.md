@@ -42,3 +42,10 @@ Leading zeros are rejected everywhere they are illegal (`01.2.3`, `1.2.3-01`), a
 - `sort_versions(iterable) -> list[SemVer]` — ascending precedence, returning a new list of `SemVer` objects.
 - `SemVer` supports `==`, `<`, `<=`, `>`, `>=`, `hash()`, `str()` and `repr()`, and exposes `major`, `minor`, `patch`, `prerelease`, `core` and `is_prerelease`.
 - `InvalidVersion` is a subclass of `ValueError`.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
